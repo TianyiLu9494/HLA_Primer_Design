@@ -1,4 +1,4 @@
-def clustalW(infile):
+def clustalw(infile):
     import os
     clustalw_exe = "/Users/tianyilu/Tools/MSA/clustalw-2.1-macosx/clustalw2"
     outfile = infile.replace('.fasta', '_clustalw.aln')
@@ -17,7 +17,7 @@ def mafft(infile):
     outfile = infile.replace('.fasta', '_mafft.aln')
     AlignIO.write(align, outfile, "clustal")
 
-def ProbCons(infile):
+def pbcn(infile):
     from Bio.Align.Applications import ProbconsCommandline
     pbcn_exe = "/Users/tianyilu/Tools/MSA/probcons/probcons"
     probcons_cline = ProbconsCommandline(pbcn_exe, input = infile, clustalw=True)
@@ -32,8 +32,8 @@ def main():
     inf = sys.argv[1]
     print(inf)
     mafft(inf)
-    ProbCons(inf)
-    clustalW(inf)
+    pbcn(inf)
+    clustalw(inf)
 
 
 if __name__ == "__main__":
