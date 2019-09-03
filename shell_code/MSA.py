@@ -1,7 +1,7 @@
 
 infile = sys.agrv[1]
 
-#clustalW
+#clustalw
 def cmd_clustalW():
 	clustalw_exe = "/Users/tianyilu/Tools/MSA/clustalw-2.1-macosx/clustalw2"
 	outfile = infile.replace('.fasta','_clustalw.aln')
