@@ -1,14 +1,25 @@
 
-def run_cdhit(inf):
+
+
+def kill_rd(inf):
+    import os
+    outf = inf.replace(".fasta", "_nr.fasta")
+    cdhit_cmd = "cd-hit -i {} -o ./cd-hit/{} -c 1".format(inf, outf)
+    print(cdhit_cmd)
+    os.system(cdhit_cmd)
+
+
+def cluster(inf):
+    import os
     os.mkdir("./cd-hit/")
     threshold = input("Enter the threshold: ")
-    outf = inf.replace(".fasta", "_c{}.fasta".format(threshold))
+    outf = inf.replace("_nr.fasta", "_c{}.fasta".format(threshold))
     cdhit_cmd = "cd-hit -i {} -o ./cd-hit/{} -c {}".format(inf, outf, threshold)
     os.system(cdhit_cmd)
     return outf + ".clstr"
 
 
-def read_clstr(inf):
+def read_clstr(inf):  # input the .clstr file by cd-hit
     with open(inf, "r") as f:
         clstr = dict()
         for line in f:
@@ -26,16 +37,18 @@ def read_clstr(inf):
 
 
 def write_clstr(clstr):
+    import os
+    os.mkdir()
     from Bio import SeqIO
     out_dic = {}
     count = 0
     rc = 0
-    with open("../A_exon2_nr.fasta","r") as f:
+    with open("../A_exon2_nr.fasta", "r") as f:
         for key in clstr.keys():
             out_dic[key] = []
-        for rec in SeqIO.parse(f,"fasta"):
+        for rec in SeqIO.parse(f, "fasta"):
             rc += 1
-            rec_name =  rec.name[-8:]
+            rec_name = rec.name[-8:]
             for key in clstr.keys():
                 if rec_name in clstr[key]:
                     out_dic[key].append(rec)
@@ -44,5 +57,5 @@ def write_clstr(clstr):
     print("{} sequences will be written".format(count))
     for key in out_dic.keys():
         out_file_name = "../A_exon2_nr.fasta".replace("nr.fasta", key+".fasta")
-        with open(out_file_name,"w") as outfile:
+        with open(out_file_name, "w") as outfile:
             SeqIO.write(out_dic[key], outfile, "fasta")

@@ -17,10 +17,11 @@ def mafft(infile):
     outfile = infile.replace('.fasta', '_mafft.aln')
     AlignIO.write(align, outfile, "clustal")
 
+
 def pbcn(infile):
     from Bio.Align.Applications import ProbconsCommandline
     pbcn_exe = "/Users/tianyilu/Tools/MSA/probcons/probcons"
-    probcons_cline = ProbconsCommandline(pbcn_exe, input = infile, clustalw=True)
+    probcons_cline = ProbconsCommandline(pbcn_exe, input=infile, clustalw=True)
     print(probcons_cline)
     stdout, stderr = probcons_cline()
     with open(infile.replace('.fasta', '_probcons.aln'), "w") as handle:
