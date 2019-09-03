@@ -27,9 +27,7 @@ def read_clstr(inf):  # input the .clstr file by cd-hit
         clstr = dict()
         for line in f:
             if line[0] is ">":
-                a = line[1:8]
-                b = line[9:10]  # when using split() there is a /n automatically generated
-                ls_name = a+b
+                ls_name = line[1:].replace("\n","").replace(" ","")
                 clstr[ls_name] = []
             else:
                 seq_id = line.split(" ")[1][5:13]
