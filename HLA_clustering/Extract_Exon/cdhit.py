@@ -1,27 +1,29 @@
-import os
-os.chdir("../Data/Sequences/cd-hit/")
 
 def run_cdhit(inf):
+    os.mkdir("./cd-hit/")
     threshold = input("Enter the threshold: ")
-    outf = inf.replace(".fasta","_c{}.fasta".format(threshold))
+    outf = inf.replace(".fasta", "_c{}.fasta".format(threshold))
     cdhit_cmd = "cd-hit -i {} -o ./cd-hit/{} -c {}".format(inf, outf, threshold)
     os.system(cdhit_cmd)
+    return outf + ".clstr"
+
 
 def read_clstr(inf):
-    with open(inf,"r") as f:
+    with open(inf, "r") as f:
         clstr = dict()
         for line in f:
             if line[0] is ">":
                 a = line[1:8]
-                b = line[9:10] # when using split() there is a /n automatically generated
+                b = line[9:10]  # when using split() there is a /n automatically generated
                 ls_name = a+b
                 clstr[ls_name] = []
             else:
-                id = line.split(" ")[1][5:13]
-                clstr[ls_name].append(id)
+                seq_id = line.split(" ")[1][5:13]
+                clstr[ls_name].append(seq_id)
     cls_nb = len(clstr.keys())
     print("{} clusters has been read.".format(cls_nb))
     return clstr
+
 
 def write_clstr(clstr):
     from Bio import SeqIO
@@ -44,4 +46,3 @@ def write_clstr(clstr):
         out_file_name = "../A_exon2_nr.fasta".replace("nr.fasta", key+".fasta")
         with open(out_file_name,"w") as outfile:
             SeqIO.write(out_dic[key], outfile, "fasta")
-
