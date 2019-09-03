@@ -4,18 +4,21 @@
 def kill_rd(inf):
     import os
     outf = inf.replace(".fasta", "_nr.fasta")
-    cdhit_cmd = "cd-hit -i {} -o ./cd-hit/{} -c 1".format(inf, outf)
+    cdhit_cmd = "cd-hit -i {} -o .o/{} -c 1".format(inf, outf)
     print(cdhit_cmd)
     os.system(cdhit_cmd)
+    return outf
 
 
 def cluster(inf):
     import os
-    os.mkdir("./cd-hit/")
     threshold = input("Enter the threshold: ")
-    outf = inf.replace("_nr.fasta", "_c{}.fasta".format(threshold))
-    cdhit_cmd = "cd-hit -i {} -o ./cd-hit/{} -c {}".format(inf, outf, threshold)
+    new_dir = "./{}cd-hit/".format(threshold[-2:])
+    os.mkdir(new_dir)
+    outf = inf.replace("_nr.fasta", "_c{}.fasta".format(threshold[-2:]))
+    cdhit_cmd = "cd-hit -i {} -o {}{} -c {}".format(inf, new_dir, outf, threshold)
     os.system(cdhit_cmd)
+    os.chdir(new_dir)
     return outf + ".clstr"
 
 
@@ -37,8 +40,6 @@ def read_clstr(inf):  # input the .clstr file by cd-hit
 
 
 def write_clstr(clstr):
-    import os
-    os.mkdir()
     from Bio import SeqIO
     out_dic = {}
     count = 0
@@ -56,6 +57,6 @@ def write_clstr(clstr):
     print("{} sequences has benn parsed in".format(rc))
     print("{} sequences will be written".format(count))
     for key in out_dic.keys():
-        out_file_name = "../A_exon2_nr.fasta".replace("nr.fasta", key+".fasta")
+        out_file_name = "./A_exon2_nr.fasta".replace("nr.fasta", key+".fasta")
         with open(out_file_name, "w") as outfile:
             SeqIO.write(out_dic[key], outfile, "fasta")
