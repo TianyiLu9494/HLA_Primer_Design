@@ -1,6 +1,4 @@
 
-
-
 def kill_rd(inf):
     import os
     outf = inf.replace(".fasta", "_nr.fasta")
@@ -27,7 +25,7 @@ def read_clstr(inf):  # input the .clstr file by cd-hit
         clstr = dict()
         for line in f:
             if line[0] is ">":
-                ls_name = line[1:].replace("\n","").replace(" ","")
+                ls_name = line[1:].replace("\n", "").replace(" ", "")
                 clstr[ls_name] = []
             else:
                 seq_id = line.split(" ")[1][5:13]
