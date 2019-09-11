@@ -34,13 +34,14 @@ class kmed_grouping():
         from Bio import AlignIO
         from Bio.Align import MultipleSeqAlignment
         import os
+        clusters = self.__kmed(k)
         new_dir = "./sub_aln_{}/".format(k)
         os.mkdir(new_dir)
-        clusters = self.__kmed(k)
+        os.chdir(new_dir)
         for i in range(0, len(clusters)):
             file_name = self.filename.replace(".aln", "_sub_aln" + str(i))
             print(file_name)
             with open(file_name, "w") as handle:
                 sub_aln = [self.aln[rec] for rec in clusters[i]]
                 sub_aln = MultipleSeqAlignment(sub_aln)
-        AlignIO.write(sub_aln, handle, "clustal")
+                AlignIO.write(sub_aln, handle, "clustal")
