@@ -1,4 +1,4 @@
-class Screening():
+class Ploting():
     def __init__(self, file):
         from Bio import AlignIO
         self.alignment = AlignIO.read(file, "clustal")
@@ -46,4 +46,4 @@ class Screening():
                     count += 1
             ws.append(count)
         sns.countplot(x=ws)
-        plt.show
+        plt.show()
